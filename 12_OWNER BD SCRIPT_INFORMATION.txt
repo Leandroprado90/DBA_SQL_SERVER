@@ -1,0 +1,9 @@
+SELECT name, 
+        suser_sname( owner_sid ) AS DBOwnerName
+ FROM master.sys.databases;
+
+  SELECT name, 
+        suser_sname( owner_sid ) AS DBOwnerName
+		, database_id 
+ FROM master.sys.databases
+ WHERE suser_sname( owner_sid ) = 'USUARIO' order by name

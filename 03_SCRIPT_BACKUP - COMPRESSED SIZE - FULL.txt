@@ -1,0 +1,18 @@
+USE msdb
+GO
+SELECT
+bs.database_name as 'Database',
+bm.physical_device_name as 'Caminho',
+CAST(CAST(bs.backup_size / 1000000 AS BIGINT) AS VARCHAR(100)) + ' MB' AS 'Tamanho do Backup',
+CAST(CAST(compressed_backup_size / 1000000 as BIGINT) AS VARCHAR(100)) + ' MB' AS 'Tamanho do Backup Comprimido',
+bs.backup_start_date,
+CASE bs.[type] WHEN 'D' THEN 'Full'
+WHEN 'I' THEN 'Differential'
+WHEN 'L' THEN 'Transaction Log'
+END AS BackupType,
+backup_size / compressed_backup_size as 'Taxa de compressão'
+FROM msdb.dbo.backupset bs
+JOIN msdb.dbo.backupmediafamily bm
+ON bs.media_set_id = bm.media_set_id
+ORDER BY database_name ASC, backup_start_date DESC
+GO

@@ -1,0 +1,17 @@
+Em USE-> Colocar o nome do banco. EXEMPLO:BD_CDC_KAFKA
+Em OBJECT ID (N'NOME DA TABELA QUE VOCÊ ESTÁ PROCURANDO) EXEMPLO: BD_PAF
+==============================================================================================
+USE [BD_CDC_KAFKA]
+GO
+IF EXISTS(SELECT 1 FROM sys.Objects
+WHERE Object_id = OBJECT_ID(N'BD_PAF')
+AND Type = N'U')
+BEGIN
+PRINT 'Table exists.'
+END
+ELSE
+BEGIN
+PRINT 'Table does not exist.'
+END
+
+

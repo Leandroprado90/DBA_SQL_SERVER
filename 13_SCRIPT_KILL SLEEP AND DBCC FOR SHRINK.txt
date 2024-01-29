@@ -1,0 +1,33 @@
+use master
+select b.name as DatabaseName , p.status, p.hostname,p.loginame,p.login_time,   p.cpu, 
+ p.physical_io, p.login_time, p.last_batch, p.cmd  from sys.sysprocesses as p
+inner join sysdatabases as b on p.dbid= b.dbid
+where  p.spid > 50 and  p.status = 'sleeping'
+use master
+DECLARE @KILLSPIDPREZA VARCHAR(30)  
+DECLARE KILL_PROC_PREZA CURSOR FOR 
+SELECT 'KILL '+CAST(SPID AS VARCHAR) from sys.sysprocesses as p
+inner join sysdatabases as b on p.dbid= b.dbid
+where  p.status = 'sleeping' and p.spid > 50
+OPEN KILL_PROC_PREZA  
+FETCH NEXT FROM KILL_PROC_PREZA INTO @KILLSPIDPREZA  
+WHILE @@FETCH_STATUS = 0  
+BEGIN 
+   EXECUTE (@KILLSPIDPREZA)  
+    FETCH NEXT FROM KILL_PROC_PREZA INTO @KILLSPIDPREZA  
+  END 
+ CLOSE KILL_PROC_PREZA  
+ DEALLOCATE KILL_PROC_PREZA 
+:
+USE TempDB
+GO
+DBCC FREEPROCCACHE
+GO
+DBCC DROPCLEANBUFFERS
+go
+DBCC FREESYSTEMCACHE ('ALL')
+GO
+DBCC FREESESSIONCACHE
+GO
+dbcc shrinkfile ('templog', 300)
+GO

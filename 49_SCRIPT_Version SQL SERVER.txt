@@ -1,0 +1,2 @@
+select @@version
+VERSÃO DO SQL SERVER
