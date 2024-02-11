@@ -1,6 +1,5 @@
 ------------------------------------------------------------------------------
 -- Microsoft SQL Server Health Check 
--- Author: Graciano Frigo (gfrigo@br.ibm.com) - IBM SQL DBA
 -- Purpose: Retrieve a quick health check of the basic aspects of a SQL Server Instance. Works SQL 2005 above.
 ------------------------------------------------------------------------------
 SET NOCOUNT ON
